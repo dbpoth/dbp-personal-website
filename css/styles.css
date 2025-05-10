@@ -324,6 +324,17 @@ body {
 
 }
 
+.indv-page-headers-s {
+  flex: 1;
+  min-width: 250px;
+  text-align: left;
+  color: #5263f8;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  font-size: 70px;
+
+}
+
 
 
 
@@ -959,6 +970,11 @@ body {
   
     .hamburger {
       display: block;
+    }
+
+    .indv-page-headers-s {
+      font-size: 60px;
+    
     }
   }
   
