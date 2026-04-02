@@ -1100,11 +1100,16 @@ body {
 
 .blog-cta-box {
     background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px dashed rgba(255,255,255,0.07);
     border-radius: 12px;
     padding: 32px 36px;
     margin: 48px 0;
     text-align: center;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.blog-cta-box:hover {
+  border-color: #7dd3a8;
 }
 
 .blog-tag-row {
@@ -1147,6 +1152,37 @@ body {
   text-decoration: none;
 }
 
+.healthsync-logo-bigger {
+
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+
+  font-weight: 200;
+  color: #c8f0d8;
+
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.healthsync-logo-bigger:hover {
+
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+  text-decoration: none;
+  color:#7dd3a8;
+
+  font-weight: 300;
+  text-decoration: none;
+}
+
 /* blog video / gif embed */
 
 .blog-video-wrap {
@@ -1160,12 +1196,6 @@ body {
     border: 1px solid rgba(255,255,255,0.08);
     object-fit: cover;
 }
-
-/* .blog-demo-gif {
-    width: 100%;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.08);
-} */
 
 .blog-video-caption {
     font-family: 'Raleway', sans-serif;
