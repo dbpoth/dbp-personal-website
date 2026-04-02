@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>I built a heart health monitor — Divya Pothavajhyula</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">DBP</a>
+            <nav class="nav-links" id="navMenu">
+                <a href="../about.html">About</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../experience.html">Experience</a>
+                <a href="../resume.html">Resume</a>
+                <a href="../techandinterests.html">Tech & Interests</a>
+                <a href="../blogs.html" class="active">Blogs</a>
+                <a href="../contact.html">Contact</a>
+            </nav>
+            <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="blog-post">
+
+            <a href="../blogs.html" class="blog-back">← Back to blogs</a>
+
+            <div class="blog-post-header">
+                <div class="blog-card-meta">
+                    <span class="blog-card-date">April 2026 ~ 8 min read</span>
+                    <span class="tool-badge-e">AI</span>
+                    <span class="tool-badge-e">Health Tech</span>
+                </div>
+                <h1 class="blog-post-title">
+                    I built a heart health monitor after a family member's silent heart attack — here's what I learned
+                </h1>
+                <p class="blog-post-subtitle">
+                    A 40+ hour undetected cardiac event, years of Apple Watch data sitting unread, and one truth I can't ignore: the signal was there all along
+                </p>
+            </div>
+
+            <div class="blog-post-body">
+
+                <h2 class="experi-title">The gap that started everything</h2>
+                <p>
+                    Imagine enduring through a silent heart attack for over 40 hours before anyone knew. Not because the warning signs weren't there — but because no one was watching the right data, in the right way, continuously enough to notice.
+                </p>
+                <p>
+                    That event changed how I think about health monitoring. Most of us with wearables are generating years of <em>continuous</em> health data — resting heart rate, heart rate variability, REM sleep — and we have almost no idea what any of it means. We see numbers. We don't see patterns.
+                </p>
+
+                <p>
+                    On top of this, even clinicians only see a snapshot of your health once or twice a year. Anything can change in between. And the worst part is that these changes often creep up slowly without us even noticing. 
+                </p>
+
+                <div class="blog-pull-quote">
+                    <p>''Healthcare interactions are episodic. Wearable data is continuous. That is the gap I am filling.''</p>
+                </div>
+
+                <p>
+                    So I built <a href="https://healthsync-p1ai.onrender.com" target="_blank" class="healthsync-logo">HealthSync</a> — a privacy-first cardiovascular intelligence tool that analyzes Apple Health exports to establish your personal baseline, detect meaningful drift over time, and generate a plain-English weekly summary using LLMs.
+                </p>
+
+                <h2 class="experi-title">What HealthSync actually does</h2>
+                <p>
+                    The core insight is that ''normal'' is personal, not universal. A resting heart rate of 58 bpm might be perfectly healthy for one person and elevated for another. Population averages miss what matters most. HealthSync computes a 30-day rolling personal baseline for each user's RHR and HRV, then measures sustained deviation from that baseline — not just daily noise, but meaningful drift over time.
+                </p>
+                <p>
+                    Each day is scored on a drift scale from 0 to 2 based on how many metrics are flagged. A score of 0 means both metrics are within <em>your</em> normal range. A score of 2 means both RHR and HRV are showing sustained deviation from your personal baseline simultaneously. The weekly insight highlights these patterns, offering a heads-up along with suggestions to help you adjust and return to your baseline. 
+                </p>
+
+                <video class="blog-video" autoplay loop muted playsinline poster="../videos/website_hs_demo_loop.gif">
+                    <source src="../videos/website_hs_demo_loop.mp4" type="video/mp4">
+                    <img src="../videos/website_hs_demo_loop.gif" alt="HealthSync demo">
+                    <p class="blog-video-caption">HealthSync in action — upload to insight in under 60 seconds</p>
+                </video>
+
+                <h2 class="experi-title">The architecture: privacy-first by design</h2>
+                <p>
+                    The most important technical decision I made was to move all the heavy computation into the browser. Apple Health exports can be 200–500MB of deeply personal physiological data. I didn't want that data touching a server — mine or anyone else's.
+                </p>
+
+                <div class="blog-arch-diagram">
+                    Apple Health XML → parsed in YOUR browser<br>
+                    ↓<br>
+                    Baselines + drift scored locally (JS pipeline)<br>
+                    ↓<br>
+                    8 numbers sent to server<br>
+                    ↓<br>
+                    LLM generates plain-English insight<br>
+                    ↓<br>
+                    Insight returned to user
+                </div>
+
+                <p>
+                    The entire analysis pipeline — XML parsing, daily aggregation, 30-day rolling baseline computation, drift scoring — runs in vanilla JavaScript in the browser. The server receives a payload of 8 pre-computed numbers and returns an AI-generated insight. Your raw health data <em>never</em> leaves your device.
+                </p>
+                <p>
+                    Amazingly, this also solved a practical problem: Render's free tier has 512MB of RAM, and loading a 400MB XML file into a Python server would crash it immediately. Moving the parsing client-side made the server trivially lightweight — the entire backend is just around 50 lines of FastAPI.
+                </p>
+
+                <h2 class="experi-title">How I used AI to build HealthSync</h2>
+                <p>
+                    HealthSync uses an LLM not only to generate the weekly insights, but also as part of my development workflow — as a collaborator that thinks alongside me, not just a tool that writes code. 
+                </p>
+                <p>
+                    When I was designing the privacy architecture, I used AI to pressure-test my assumptions: what data am I sending, what could go wrong, what would a privacy-conscious user be uncomfortable with? That conversation directly impacted the system architecture.
+                </p>
+                <p>
+                    And, AI has been an invaluable debugging tool. When the XML parser crashed on certain Apple Health exports, sort of ''thinking out loud'' with an LLM led me to the root cause far faster than manual debugging. 
+                </p>
+
+                <div class="blog-pull-quote">
+                    <p>''AI enables not just smarter coding, but faster shipping.''</p>
+                </div>
+
+                <h2 class="experi-title">What I learned</h2>
+                <p>
+                    <span class="highlight-bold">Don't sleep on the data preprocessing stage.</span> Apple Health XML exports are messy, large, and inconsistent across devices and iOS versions. An unexpectedly interesting part of this process was building a robust browser-side parser that handles every edge case without crashing or leaking memory.
+                </p>
+                <p>
+                    <span class="highlight-bold">Privacy-first architecture is also better architecture.</span> Moving computation client-side wasn't just the right thing to do ethically — it made the system faster, cheaper to run, and more resilient. A double win!
+                </p>
+                <p>
+                    <span class="highlight-bold">The AI prompt matters as much as the model.</span> Getting the LLM to generate health insights that are specific, actionable, and calm — without diagnosing anything or being alarmist — required careful prompt engineering. The final prompt sends a structured daily breakdown, week-over-week trends, streak data, and explicit rules about tone and medical boundaries.
+                </p>
+                <p>
+                    <span class="highlight-bold">Building something personal to you makes you a better engineer.</span> Every technical decision had stakes beyond aesthetics. When you're building a system that touches health data for people you care about, you think harder about <em>everything</em> — edge cases, privacy, drift calculations, etc. — much harder than you would for any academic project.
+                </p>
+
+                <h2 class="experi-title">What's next</h2>
+                <p>
+                    This is just phase 1 of HealthSync. The vision is much larger: correlating cardiovascular data with calendar stress, sleep, travel, and activity — so the picture your doctor sees once a year becomes something you understand every single day. The data to do this already exists in most people's phones. What's missing is the <em>integration</em> between everything and the intelligence layer to read it.
+                </p>
+                <p>
+                    I want to live in a world where a 40-hour silent cardiac event leaves a trace that someone — or something — actually catches like <em>this</em> [snaps finger]. The kicker is that we're so much closer than most people think.
+                </p>
+
+                <div class="blog-cta-box">
+                    <p>HealthSync is live! Upload your Apple Health export and see your personal cardiovascular baseline in under a minute.</p>
+                    <a href="https://healthsync-p1ai.onrender.com" target="_blank" class="button">Try HealthSync →</a>
+                </div>
+
+                <div class="blog-tag-row">
+                    <span class="tool-badge-e">AI</span>
+                    <span class="tool-badge-e">Health Tech</span>
+                    <span class="tool-badge-e">FastAPI</span>
+                    <span class="tool-badge-e">JavaScript</span>
+                    <span class="tool-badge-e">Apple Health</span>
+                    <span class="tool-badge-e">Privacy</span>
+                    <span class="tool-badge-e">OpenAI API</span>
+                    <span class="tool-badge-e">Claude API</span>
+                </div>
+
+            </div>
+            <a href="../blogs.html" class="blog-back">← Back</a>
+        </div>
+    </div>
+
+    <script src="../js/scripts.js"></script>
+
+    <footer class="footer-gen">
+        © 2026 Divya Pothavajhyula | <a href="../contact.html" class="contact">Contact</a> | <a href="../index.html" class="home">Home</a>
+    </footer>
+
+</body>
+</html>
