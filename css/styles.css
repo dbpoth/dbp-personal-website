@@ -981,8 +981,9 @@ body {
   
 /* blogs page */
 .blog-list {
-    max-width: 800px;
+    max-width: 900px;
     padding-bottom: 60px;
+    margin: 0 auto;
 }
 
 .blog-card {
@@ -1032,8 +1033,9 @@ body {
 
 /* ── blog post page ── */
 .blog-post {
-    max-width: 760px;
+    max-width: 1000px;
     padding-bottom: 80px;
+    margin: 0 auto;
 }
 
 .blog-back {
